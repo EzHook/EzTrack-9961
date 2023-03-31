@@ -1,20 +1,25 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import RootNavigator from './navigator/RootNavigator';
+import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
+import {API_URL, API_TOKEN} from "@env";
+
+const client = new ApolloClient({
+  uri:API_URL,
+  headers: {'Authorization':API_TOKEN},
+  cache: new InMemoryCache(),
+});
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    // @ts-ignore - TailwindProvider is missing type definition
+    <ApolloProvider client={client}>
+      <NavigationContainer>
+        <RootNavigator />
+      </NavigationContainer>
+    </ApolloProvider>
+      
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
